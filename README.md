@@ -5,11 +5,15 @@ Range Expect Script Generator Utility
 
 Important Notes: 
 
+This is an extremely powerful utility with very constructive or destructive capabilites depending on who's using it! Upon execution of the utility make sure that you quadrupal check your answers to the interactive prompts.
+
 This utility requires both kornshell (aka ksh) and expect to be installed. I've tested various versions of each without issue, but make no guarantees if the version of ksh or expect that you're using do not work. 
 
 Also, the utility will only work be able to reach your target hosts if you either have passwordless authentication setup for all target hosts or all of the target hosts logins use the same password. I highly recommend the former where possible.
 
 Any user can use the utility (sudo not needed so only give this to users that can be trusted).
+
+
 
 
 
@@ -19,11 +23,13 @@ If you don't have an enterprise level automation software available such as Ansi
 
 
 
+
+
 Initial Setup:
 
 There is a very small amount of setup that needs to be done to get the utility to work properly.
 
-1. Placing resgu and the required files.
+1. Placing resgu and the required files in the appropriate directory
 
 The resgu executable can only be executed from a users home/user/resgu directory. For instance if I'm logging into the central server as the user "someuser1", then the resgu executable and it's required files must be in the "/home/someuser1/resgu" directory.
 
@@ -37,7 +43,7 @@ ansibletower passwordrequired
 root passwordrequired
 ...
 
-3. Setting up a single or multiple hosts files. 
+3. Setting up a single or multiple hosts files
 
 One or more hosts files named whatever you'd like must be placed in the directory where the resgu executable is. Resgu uses this to connect to the remote hosts via a range that you select interactively upon execution of the utility. Hosts files must be in a two column format just like a normal hosts file. 
 
@@ -47,9 +53,14 @@ server3 13.56.78.89
 ...
 
 
+
+
 Usage:
 
-When you execute the utility you will be greeted with the following information that is relevant to the setup and responses you will be providing before the ultimate execution of the expect scripts.
+From your user's home/resgu directory type the below command to start the utility.
+./resgu
+
+When you execute the utility you will be greeted with the following warning information that is relevant to the setup and responses you will be providing before the ultimate execution of the expect scripts.
 
 /------------------------------------------------------\
 | Please answer the following questions appropriately. |
@@ -59,13 +70,8 @@ When you execute the utility you will be greeted with the following information 
 user1  passwordnotrequired 
 user2  passwordrequired
 user3  passwordrequired
-...
 
-2. Hosts files must be in a two column format just like a normal hosts file.
-
-server1 12.34.56.78
-server2 12.45.67.89
-...
+2. Hosts files must be in a two column format.
 
 3. Input commands carefully and with case sensitivity in mind.
 
@@ -74,3 +80,9 @@ ps -ef | grep process | awk '{print \\\\\$2}'
 
 5. Press Ctrl+C to abort.
 
+
+
+
+Logging: 
+
+Once the utility has finished, then a log file while be generated in the same directory as where the resgu executable was. The log file will be called job(DATE).log. For example if today is December 25th 2018, then the log file will be called job12122018.log. I highly recommend that you check out the log file after execution to make sure the utility does exactly what you wanted.
