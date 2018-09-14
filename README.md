@@ -41,7 +41,6 @@ someuser1 passwordnotrequired
 someuser2 passwordrequired
 ansibletower passwordrequired
 root passwordrequired
-...
 
 3. Setting up a single or multiple hosts files
 
@@ -50,10 +49,6 @@ One or more hosts files named whatever you'd like must be placed in the director
 server1 12.34.56.78
 server2 12.45.67.89
 server3 13.56.78.89
-...
-
-
-
 
 Usage:
 
@@ -79,9 +74,6 @@ user3  passwordrequired
 ps -ef | grep process | awk '{print \\\\\$2}'
 
 5. Press Ctrl+C to abort.
-
-
-
 
 Logging: 
 
