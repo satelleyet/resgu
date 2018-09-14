@@ -12,6 +12,8 @@ This utility requires both kornshell (aka ksh) and expect to be installed. I've 
 Also, the utility will only work be able to reach your target hosts if you either have passwordless authentication setup for all target hosts or all of the target hosts logins use the same password. I highly recommend the former where possible.
 
 Any user can use the utility (sudo not needed so only give this to users that can be trusted).
+
+Make sure your Users and hosts files do not have any blank lines in them.
                                                                                                                                                                                                                                                                          
 Synopsis:
 
