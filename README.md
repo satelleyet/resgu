@@ -3,7 +3,7 @@
 Range Expect Script Generator Utility
 
 
-*Important Notes* 
+Important Notes: 
 
 This utility requires both kornshell (aka ksh) and expect to be installed. I've tested various versions of each without issue, but make no guarantees if the version of ksh or expect that you're using do not work. 
 
@@ -12,9 +12,11 @@ Also, the utility will only work be able to reach your target hosts if you eithe
 Any user can use the utility (sudo not needed so only give this to users that can be trusted).
 
 
+
 Synopsis:
 
 If you don't have an enterprise level automation software available such as Ansible, but have a need to automate a repetetive task to tens, hundreds or even thoughands of servers without creating an expect script everytime you have a new task to do, then give resgu a try. Resgu is a utility which allows for a single string to be sent via sftp or ssh to a range of ip addresses based off a specified host file (sorry ftp is not included due to security issues with the protocol). The utility generates and executes multiple expect scripts on the fly and simultaneously based off the user's interactively inputted criteria. This has been tested via SLES 9 through 11, but should also work for systems that utilize other versions of Linux as well as AIX, Cygwin or OSX (assuming you have both kornshell and expect installed). The utility is written in kornshell and expect so feel free to make your own alterations.
+
 
 
 Initial Setup:
@@ -43,6 +45,7 @@ server1 12.34.56.78
 server2 12.45.67.89
 server3 13.56.78.89
 ...
+
 
 Usage:
 
