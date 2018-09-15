@@ -88,10 +88,10 @@ Interactive prompts:
 testhostsfile
 
 2. Next enter the first host of your range in your selected hosts file.                                                         
-host1
+1
 
 3. Next enter the last host of your range in your selected hosts file.                                                         
-host1000
+server1000
 
 4. Next enter the username of your desired remote login.                                                                        
 someuser1
@@ -112,7 +112,8 @@ put somefile somewhere
 
 Logging: 
 
-To check the progress of the utility you can open a new command line interface and view the templog files under the /tmp directory. How many templogs there are depends on how many simultaneous connections you chose to have. If there are 7 then there will be a file at /tmp/templog1, /tmp/templog2 and so on until /tmp/temlog7.
+To check the progress of the utility you can open a new command line interface and view the templog files under the /tmp directory. How many templogs there are depends on how many simultaneous connections you chose to have. If there are 7 then there will be a file at /tmp/templog1, /tmp/templog2 and so on until /tmp/templog7.
 
-Final file
+
+Final log file                                                                                                                      
 Once the utility has finished, then a log file while be generated in the same directory as where the resgu executable was. The log file will be called job(DATE).log. For example if today is December 25th 2018, then the log file will be called job12252018.log. I highly recommend that you check out the log file after execution to make sure the utility does exactly what you wanted. If you run it more than once in a day, then the log will be appended to for that day.
