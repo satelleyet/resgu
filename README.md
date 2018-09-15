@@ -34,9 +34,9 @@ Important Notes:
 
 4. Any user can use the utility (sudo not needed so only give this to users that can be trusted).
 
-5. Make sure your Users and hosts files do not have any blank lines or duplicate entries in them.
-                                                                                                                                 6. Files obtained using get will be placed in a specific folder directly under the resgu directory with the name of the remote server it was pulled from.
-                                                                                                                                 7. Host names should not included reserved words. Additionally they should not use the word host or test in their hostname.                                                              
+5. Make sure your Users and hosts files do not have any blank lines or duplicate entries in them.                                                                              
+6. Files obtained using get will be placed in a specific folder directly under the resgu directory with the name of the remote server it was pulled from.                                                                                                                                                
+7. Host names should not included reserved words. Additionally they should not use the word host or test in their hostname.                                                              
                                                                                                                                  
                                                                                                                                
                                                                                                                     
@@ -58,7 +58,8 @@ server1 12.34.56.78
 server2 12.45.67.89                                                                                                             
 server3 13.56.78.89                                                                                                                                                                                  
 
-Usage:                                                                                                                                                                                                                                                             
+Usage:
+
 From your user's home/resgu directory type the below command to start the utility.                                                                                                                         
 ./resgu
 
