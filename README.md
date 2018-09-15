@@ -41,7 +41,7 @@ Important Notes:
                                                                                                                                  
                                                                                                                                
                                                                                                                     
-                                                                                                                                
+                                                                                                              
 Initial Setup:
 
 1. Placing resgu and the required files in the appropriate directory                                                                       
