@@ -96,7 +96,8 @@ put somefile somewhere
 7
 
 Logging: 
-To check the progress of the utility you can open a new command line interface and view the templog files under /tmp directory. How many templogs there are depends on how many simultaneous connections you chose to have. If there are 7 then there will be a file at /tmp/templog1, /tmp/templog2 and so on until /tmp/temlog7.
+
+To check the progress of the utility you can open a new command line interface and view the templog files under the /tmp directory. How many templogs there are depends on how many simultaneous connections you chose to have. If there are 7 then there will be a file at /tmp/templog1, /tmp/templog2 and so on until /tmp/temlog7.
 
 Final file
 Once the utility has finished, then a log file while be generated in the same directory as where the resgu executable was. The log file will be called job(DATE).log. For example if today is December 25th 2018, then the log file will be called job12122018.log. I highly recommend that you check out the log file after execution to make sure the utility does exactly what you wanted.
