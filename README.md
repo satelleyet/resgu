@@ -25,16 +25,16 @@ The utility generates and executes multiple expect scripts on the fly and simult
 
 Important Notes: 
 
-This is an extremely powerful utility with very constructive or destructive capabilites depending on who's using it! Upon execution of the utility make sure that you quadrupal check your answers to the interactive prompts.
+1. This is an extremely powerful utility with very constructive or destructive capabilites depending on who's using it! Upon execution of the utility make sure that you quadrupal check your answers to the interactive prompts.
 
-This utility requires both bash (aka bourne again shell) and expect to be installed. I've tested various versions of each without issue, but make no guarantees if the version of bash or expect that you're using cause the utility to fail. 
+2. This utility requires both bash (aka bourne again shell) and expect to be installed. I've tested various versions of each without issue, but make no guarantees if the version of bash or expect that you're using cause the utility to fail. 
 
-Also, the utility will only be able to reach your target hosts if you either have passwordless authentication setup for all target hosts or all of the target hosts logins use the same password. I highly recommend the former where possible.
+3. Also, the utility will only be able to reach your target hosts if you either have passwordless authentication setup for all target hosts or all of the target hosts logins use the same password. I highly recommend the former where possible.
 
-Any user can use the utility (sudo not needed so only give this to users that can be trusted).
+4. Any user can use the utility (sudo not needed so only give this to users that can be trusted).
 
-Make sure your Users and hosts files do not have any blank lines or duplicate entries in them.
-                                                                                                                                                                                                                                                                                                                                                                                                    
+5. Make sure your Users and hosts files do not have any blank lines or duplicate entries in them.
+                                                                                                                                 6. Files obtained using get will be placed in a specific folder directly under the resgu directory with the name of the remote server it was pulled from.                                                                                                                                                                                                                                                                  
 Initial Setup:
 
 There is a very small amount of setup that needs to be done to get the utility to work properly.
