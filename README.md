@@ -13,13 +13,14 @@ Features:
 3. Do any single command (or huge one liner) SSH task remotely to as many servers as you want. (sudo included if password is not required for the sudo command).
 4. Allows for remote script execution via ssh.
 5. GET or PUT files or directories from a range of hosts at once via sftp.
-6. Use different hosts files for different environments or cases. Can be handy if you only want to do a task a some of your stores, but they aren't in sequential order of your main hosts file.                                                              
-7. Execute tasks for a specified range of hosts within one of your hosts files.                                                  
+6. Use different hosts files for different environments or cases. Can be handy if you only want to do a task a some of your stores, but they aren't in sequential order of your main hosts file.                                                  
+7. Execute tasks for a specified range of hosts within one of your hosts files.                                            
 8. Specify an expect script timeout for the individual connections.
 9. Ctrl + C kill switch cleans up afterwards. (Does not change anything on remote servers. Kills local resgu processes and cleans up resgu temp files.)
 10. Handles creation of initial login keys.
-11. Handles passwordless or password required cases via Users file.  
-12. Minimal configuration to get up and running.
+11. Handles passwordless or password required cases via Users file.
+12. Handles various AIX or Linux flavors ssh prompts.
+13. Minimal configuration to get up and running.
 
 The utility generates and executes multiple expect scripts on the fly and simultaneously based off the user's interactively inputted criteria. The execution of the utility has been tested via SLES 9 through 11, but should also work for systems that utilize other versions of Linux as well as AIX, Cygwin or OSX (assuming you have both a bash shell and expect installed on the local system). The utility is written in bash and expect so feel free to make your own alterations.
                                                                                                                                           
