@@ -68,10 +68,9 @@ When you execute the utility you will be greeted with the following warning info
 
 Please answer the following questions appropriately.
 
-1. Users file must be in the following format.                                                                                                                                                                                                                     
-user1  passwordnotrequired                                                                                                         
-user2  passwordrequired                                                                                                              
-user3  passwordrequired                                                                                                                
+1. Users file must be in the following format.                                                                                                                                                                                                             someuser1  passwordnotrequired                                                                                                         
+someuser2  passwordrequired                                                                                                             
+someuser3  passwordrequired                                                                                                                
 
 2. Hosts files must be in a two column format.
 
