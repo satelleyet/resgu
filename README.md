@@ -8,7 +8,7 @@ If you don't have an enterprise level automation software available such as Ansi
 
 Features:
 
-1. Interactive prompts for ease of use. Just answer the questions and let the utility do all the work. No coding or scripting knowledge required! 
+1. Interactive prompts make expect script generation and simultaneous execution for a range of hosts very easy. Just answer the questions and let the utility do all the work. No coding or scripting knowledge required! 
 2. Creates up to 7 expect scripts on the fly and executes them.
 3. Do any single command (or huge one liner) SSH task remotely to as many servers as you want. (sudo included if password is not required for the sudo command).
 4. Allows for remote script execution via ssh.
