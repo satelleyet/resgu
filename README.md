@@ -56,10 +56,9 @@ root passwordrequired
 One or more hosts files named whatever you'd like must be placed in the directory where the resgu executable is. Resgu uses this to connect to the remote hosts via a range that you select interactively upon execution of the utility. Hosts files must be in a two column format just like a normal hosts file.                                                                                                                                  
 server1 12.34.56.78                                                                                                             
 server2 12.45.67.89                                                                                                             
-server3 13.56.78.89
-                                                                                                                                                                                                                                                            Usage:
-
-From your user's home/resgu directory type the below command to start the utility.                                             
+server3 13.56.78.89                                                                                                                                                                                  
+Usage:                                                                                                                                          
+From your user's home/resgu directory type the below command to start the utility.                                                                                                                         
 ./resgu
 
 When you execute the utility you will be greeted with the following warning information that is relevant to the setup and responses you will be providing before the ultimate execution of the expect scripts.
