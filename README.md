@@ -17,7 +17,7 @@ Also, the utility will only be able to reach your target hosts if you either hav
 
 Any user can use the utility (sudo not needed so only give this to users that can be trusted).
 
-Make sure your Users and hosts files do not have any blank lines in them.
+Make sure your Users and hosts files do not have any blank lines or duplicate entries in them.
                                                                                                                                                                                                                                                                                                                                                                                                     
 Initial Setup:
 
