@@ -13,8 +13,8 @@ Features:
 3. Do any single command (or huge one liner) SSH task remotely to as many servers as you want. (sudo included if password is not required for the sudo command).
 4. Allows for remote script execution via ssh.
 5. GET or PUT files or directories from a range of hosts at once via sftp.
-6. Use different hosts files for different environments or cases. Can be handy if you only want to do a task a some of your stores, but they aren't in sequential order of your main hosts file.
-7. Execute tasks for a specified range of hosts within one of your hosts files.
+6. Use different hosts files for different environments or cases. Can be handy if you only want to do a task a some of your stores, but they aren't in sequential order of your main hosts file.                                                              
+7. Execute tasks for a specified range of hosts within one of your hosts files.                                                  
 8. Specify an expect script timeout for the individual connections.
 9. Ctrl + C kill switch cleans up afterwards. (Does not change anything on remote servers. Kills local resgu processes and cleans up resgu temp files.)
 10. Handles creation of initial login keys.
@@ -58,7 +58,7 @@ server1 12.34.56.78
 server2 12.45.67.89                                                                                                             
 server3 13.56.78.89                                                                                                                                                                                  
 
-Usage:                                                                                                                                          
+Usage:                                                                                                                                                                                                                                                             
 From your user's home/resgu directory type the below command to start the utility.                                                                                                                         
 ./resgu
 
