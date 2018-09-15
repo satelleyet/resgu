@@ -29,7 +29,7 @@ The resgu executable can only be executed from a users home/user/resgu directory
 
 2. Setting up the "Users" file
 
-A file called "Users" must be placed in the directory where resgu executable is. Resgu uses this to tell if the remote user is already setup up with passwordless authentication or not. If not you will be prompted to enter a password. First column is the name of the user and the second column should be set to either passwordnotrequired or passwordrequired accordingly.
+A file called "Users" must be placed in the directory where resgu executable is. Resgu uses this to tell if the remote user is already setup up with passwordless authentication or not. If not you will be prompted to enter a password. First column is the name of the user and the second column should be set to either passwordnotrequired or passwordrequired accordingly.                  
 
 someuser1 passwordnotrequired                                                                                                   
 someuser2 passwordrequired                                                                                                       
@@ -53,7 +53,7 @@ When you execute the utility you will be greeted with the following warning info
 
 Please answer the following questions appropriately.
 
-1. Users file must be in the following format.                                                                                    
+1. Users file must be in the following format.                                                                                                                                                                                                                     
 user1  passwordnotrequired                                                                                                         
 user2  passwordrequired                                                                                                              
 user3  passwordrequired                                                                                                                
