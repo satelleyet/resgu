@@ -87,7 +87,7 @@ Interactive prompts:
 testhostsfile
 
 2. Next enter the first host of your range in your selected hosts file.                                                         
-1
+server1
 
 3. Next enter the last host of your range in your selected hosts file.                                                         
 server1000
