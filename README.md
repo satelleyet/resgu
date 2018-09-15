@@ -4,14 +4,30 @@ Range Expect Script Generator Utility
                                                                                                                                                                                                                                 
 Synopsis:
 
-If you don't have an enterprise level automation software available such as Ansible, but have a need to automate a repetetive ssh or sftp task to tens, hundreds or even thoughands of servers without creating an expect script everytime you have a new task to do, then give resgu a try. Resgu is a utility which allows for a single string to be sent via sftp or ssh to a range of ip addresses based off a specified host file (sorry ftp is not included due to security issues with the protocol). The utility generates and executes multiple expect scripts on the fly and simultaneously based off the user's interactively inputted criteria. This has been tested via SLES 9 through 11, but should also work for systems that utilize other versions of Linux as well as AIX, Cygwin or OSX (assuming you have both kornshell and expect installed). The utility is written in kornshell and expect so feel free to make your own alterations.
+If you don't have an enterprise level automation software available such as Ansible, but have a need to automate a repetetive ssh or sftp task for tens, hundreds or even thousands of servers without creating an expect script everytime you have a new task to do, then give resgu a try. Resgu is a utility which allows for a single string (or huge one liner) to be sent via ssh or sftp to a range of ip addresses based off a specified host file (sorry ftp is not included due to security issues with the protocol). Great for Linux or AIX administrators and networking administrators that need to get a quick job done fast at a lot of hosts or routers. 
+
+Features:
+
+1. Interactive prompts for ease of use. Just answer the questions and let the utility do all the work. No coding or scripting knowledge required! 
+2. Creates up to 7 expect scripts on the fly and executes them.
+3. Do any single command (or huge one liner) SSH task remotely to as many servers as you want. (sudo included if password is not required for the sudo command).
+4. Allows for remote script execution via ssh.
+5. GET or PUT files or directories from a range of hosts at once via sftp.
+6. Use different hosts files for different environments or cases. Can be handy if you only want to do a task a some of your stores, but they aren't in sequential order of your main hosts file.
+7. Execute tasks for a specified range of hosts within one of your hosts files.
+8. Specify an expect script timeout for the individual connections.
+9. Ctrl + C kill switch cleans up afterwards. (Does not change anything on remote servers. Kills local resgu processes and cleans up resgu temp files.)
+10. Handles creation of initial login keys.
+11. Handles passwordless or password required cases via Users file.
+
+The utility generates and executes multiple expect scripts on the fly and simultaneously based off the user's interactively inputted criteria. The execution of the utility has been tested via SLES 9 through 11, but should also work for systems that utilize other versions of Linux as well as AIX, Cygwin or OSX (assuming you have both a bash shell and expect installed on the local system). The utility is written in bash and expect so feel free to make your own alterations.
                                                                                                                                           
 
 Important Notes: 
 
 This is an extremely powerful utility with very constructive or destructive capabilites depending on who's using it! Upon execution of the utility make sure that you quadrupal check your answers to the interactive prompts.
 
-This utility requires both kornshell (aka ksh) and expect to be installed. I've tested various versions of each without issue, but make no guarantees if the version of ksh or expect that you're using cause the utility to fail. 
+This utility requires both bash (aka bourne again shell) and expect to be installed. I've tested various versions of each without issue, but make no guarantees if the version of bash or expect that you're using cause the utility to fail. 
 
 Also, the utility will only be able to reach your target hosts if you either have passwordless authentication setup for all target hosts or all of the target hosts logins use the same password. I highly recommend the former where possible.
 
