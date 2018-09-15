@@ -89,7 +89,7 @@ someuser1
 7. Next enter the command to be executed.                                                                                       
 put somefile somewhere
 
-8. Select between 1 and 23 to choose the length of your timeout in seconds.                                                    
+8. Select between 1 and 23 to choose the length of your timeout in seconds (example is for 30 minutes).                                                    
 2
 
 9. Select between 1 and 7 to choose the amount of connections to be established simultaneously.                                  
