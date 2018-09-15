@@ -7,7 +7,7 @@ Important Notes:
 
 This is an extremely powerful utility with very constructive or destructive capabilites depending on who's using it! Upon execution of the utility make sure that you quadrupal check your answers to the interactive prompts.
 
-This utility requires both kornshell (aka ksh) and expect to be installed. I've tested various versions of each without issue, but make no guarantees if the version of ksh or expect that you're using do not work. 
+This utility requires both kornshell (aka ksh) and expect to be installed. I've tested various versions of each without issue, but make no guarantees if the version of ksh or expect that you're using cause the utilit to fail. 
 
 Also, the utility will only be able to reach your target hosts if you either have passwordless authentication setup for all target hosts or all of the target hosts logins use the same password. I highly recommend the former where possible.
 
