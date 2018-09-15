@@ -53,8 +53,7 @@ ansibletower passwordrequired
 root passwordrequired                                                                                                           
 
 3. Setting up a single or multiple hosts files                                                                                                              
-One or more hosts files named whatever you'd like must be placed in the directory where the resgu executable is. Resgu uses this to connect to the remote hosts via a range that you select interactively upon execution of the utility. Hosts files must be in a two column format just like a normal hosts file. 
-
+One or more hosts files named whatever you'd like must be placed in the directory where the resgu executable is. Resgu uses this to connect to the remote hosts via a range that you select interactively upon execution of the utility. Hosts files must be in a two column format just like a normal hosts file.                                                                                                                                  
 server1 12.34.56.78                                                                                                             
 server2 12.45.67.89                                                                                                             
 server3 13.56.78.89
