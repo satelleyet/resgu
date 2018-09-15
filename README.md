@@ -18,7 +18,7 @@ Features:
 8. Specify an expect script timeout for the individual connections.
 9. Ctrl + C kill switch cleans up afterwards. (Does not change anything on remote servers. Kills local resgu processes and cleans up resgu temp files.)
 10. Handles creation of initial login keys.
-11. Handles passwordless or password required cases via Users file.
+11. Handles passwordless or password required cases via Users file.                                                                                                                                                    
 
 The utility generates and executes multiple expect scripts on the fly and simultaneously based off the user's interactively inputted criteria. The execution of the utility has been tested via SLES 9 through 11, but should also work for systems that utilize other versions of Linux as well as AIX, Cygwin or OSX (assuming you have both a bash shell and expect installed on the local system). The utility is written in bash and expect so feel free to make your own alterations.
                                                                                                                                           
