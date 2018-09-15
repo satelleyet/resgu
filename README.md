@@ -83,8 +83,8 @@ user3  passwordrequired
 
 3. Input commands carefully and with case sensitivity in mind.
 
-4. When using a command string that calls a variable at the remote hosts (uses a \$ sign) be sure to double backslash before the character like so:
-ps -ef | grep process | awk '{print \\$2}'
+4. When using a command string that calls a variable at the remote hosts (uses a \$ sign) be sure to double backslash before the character like so:                                                                                                                                
+ps -ef | grep process | awk '{print \\\\$2}'
 
 5. Press Ctrl+C to abort.
                                                                                                                                                                                                                                                                   
