@@ -53,7 +53,7 @@ When you execute the utility you will be greeted with the following warning info
 
 Please answer the following questions appropriately.
 
-1. Users file must be in the following format.
+1. Users file must be in the following format.                                                                                    
 user1  passwordnotrequired                                                                                                         
 user2  passwordrequired                                                                                                              
 user3  passwordrequired                                                                                                                
