@@ -1,0 +1,965 @@
+#!/bin/sh
+
+####################################################################
+# This is an ftp, sftp and ssh range script. See notes at the tail # 
+# of the script for more info                                      #
+####################################################################
+
+DATESTAMP=`date +%m%d%Y` 
+> /tmp/job.log
+LOG="/tmp/job.log"
+
+################################################
+# Set trap function and force close procedure. #
+################################################
+
+trap ctrl_c INT
+
+function ctrl_c {
+        sleep 3
+        echo ''
+        echo ''
+        echo ''
+        echo '------------------------------------------------------------------
+-----'
+        echo ''
+        echo 'Killing running processes and removing temporary files.'
+        echo ''
+
+        echo "       _    _"
+        echo  "  ___ (~ )( ~)"
+        echo  " /   \\_\\ \\/ /"
+        echo "|   D_ ]\\ \\/"
+        echo "|   D _]/\\ \\"
+        echo " \\___/ / /\\ \\"
+        echo "      (_ )( _)"
+
+        if [ -f /tmp/job.log ]
+         then
+                rm /tmp/job.log
+        fi
+
+        if [ -f /tmp/disconnect"$DATESTAMP".log ]
+         then
+                rm /tmp/disconnect"$DATESTAMP".log
+        fi
+
+        if [ -f /tmp/comd ]
+         then
+                rm /tmp/comd
+        fi
+
+        if [ -f /tmp/Selection ]
+         then
+                rm /tmp/Selection
+        fi
+
+        if [ -f /tmp/xa* ]
+         then
+                rm /tmp/xa*
+        fi
+
+        if [ -f /tmp/templog* ]
+         then
+                rm /tmp/templog*
+        fi
+
+        echo ''
+        echo 'Now exiting.'
+
+        if [[ $(ps -ef | grep resegu | grep -v grep) != '' ]]
+         then
+                killall resgu
+        fi
+
+exit 1
+}
+
+############################################################################
+#  Check if expect and ksh binaries exist and break out of utility if not. #
+############################################################################
+
+CHECKFOREXPECT=`whereis -b expect | sed 's/expect: //g'`
+
+if [[ $CHECKFOREXPECT = '' ]]
+ then
+        echo '!!!ATTENTION!!!'
+        echo ''
+        echo 'The expect binary does not exist on this system! Unable to continue.'
+        echo "Work with your AIX or Linux administrator to install expect."
+        echo ''
+        echo "Exiting resgu"
+
+        ctrl_c
+fi
+
+CHECKFORKSH=`whereis -b ksh | sed 's/ksh: //g'`
+
+if [[ $CHECKFORKSH = '' ]]
+ then
+        echo '!!!ATTENTION!!!'
+        echo ''
+        echo 'The ksh binary does not exist on this system! Unable to continue.'
+        echo "Work with your AIX or Linux administrator to install ksh."
+        echo ''
+        echo "Exiting resgu"
+
+        ctrl_c
+fi
+
+
+
+#####################################################################
+# Check if "$HOME/resgu" folder exists and if not create it.  #
+#####################################################################
+
+if [ ! -d "$HOME/resgu" ]
+ then
+	mkdir "$HOME/resgu"
+fi
+
+####################################################################
+# Verify present working directory is $HOME/resgu and if not #
+# then prompt the user to copy the script to $HOME/resgu and #
+# execute from there. Will break out of script.                    #
+####################################################################
+
+PRESENTWORKINGDIRECTORY=`pwd`
+SCRIPTDIRECTORY=`echo $HOME/resgu`
+
+if [[ $PRESENTWORKINGDIRECTORY != $SCRIPTDIRECTORY ]]
+ then
+	echo "The resgu utility must be executed from the $HOME/resgu directory."
+	ctrl_c
+fi
+
+##################
+# Get user input #
+##################
+
+	echo ""
+        echo "      /~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\\"
+        echo "      | Range Expect Script Generator Utility (resgu)|"
+        echo "      \\~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~/"
+        echo ""
+	echo "   /------------------------------------------------------\\"
+	echo "   | Please answer the following questions appropriately. |"
+	echo "   \\------------------------------------------------------/"
+	echo ""
+	echo "/-------------------------------------------------------------\\"
+        echo "|                                                             |"
+        echo "| 1. \"Users\" file must be in the following format.            |"
+        echo "| user1  passwordnotrequired                                  |"
+        echo "| user2  passwordrequired                                     |"
+	echo "| user3  passwordrequired                                     |"
+        echo "|                                                             |"
+	echo "| 2. Hosts files must be in a two column format.              |"
+        echo "|                                                             |"
+	echo "| 3. Input commands carefully and with case sensitivity in    |"
+        echo "| mind.                                                       |"
+	echo "|                                                             |"
+        echo "| 4. When using a command string that calls a variable at the |"
+        echo "| remote hosts (uses a \$ sign) be sure to double backslash    |" 
+	echo "| before the character like so:                               |"
+        echo "| ps -ef | grep process | awk '{print \\\\\$2}'                  |"
+        echo "|                                                             |"
+        echo "| 5. Press Ctrl+C to abort.                                   |"
+	echo "\\-------------------------------------------------------------/"
+	sleep 2
+	echo ""
+	echo ""
+
+	echo "Name of hosts file in $HOME/resgu"
+        read C
+
+	if [ -e $C ]
+	 then
+		echo "Using the \"$C\" hosts file."	 
+	 else
+		echo "$C does not exist!"
+                ctrl_c 
+	fi
+
+	echo ''
+	echo "First Host"
+	read F
+	VERFIRSTHOST=`grep $F $C`
+	if [[ "$VERFIRSTHOST" != '' ]]
+	 then 
+		echo "Host $F exists in host file $C."
+	 else
+		echo "Host $F does not exist in host file $C." 
+		echo "Verify your hosts file format is correct. Exiting utility."
+		ctrl_c 
+	fi
+	echo ''
+	echo "Last Host"
+	read L
+	VERLASTHOST=`grep $L $C`
+	if [[ "$VERLASTHOST" != '' ]]
+         then
+                echo "Host $L exists in host file $C."
+		echo ""
+         else
+                echo "Host $L does not exist in host file $C. Exiting utility."
+                ctrl_c
+        fi
+	echo ''
+	
+	if [ ! -f Users ]
+	 then
+		echo "Users file does not exist. Exiting utility."
+		ctrl_c
+	fi
+
+	USERS=`awk '{print $1}' Users`
+	USERSCOUNT=`grep -c password Users`
+	echo "Username"
+	echo "Choose (1-$USERSCOUNT) from the list below:"
+        select U in $USERS
+        do
+                break 
+        done
+        echo "You chose $U."
+	
+	USERPWREQUIREDFLAG=`cat Users| grep "$U" | awk '{print $2}'`
+	echo ''
+		if [[ $USERPWREQUIREDFLAG = "passwordrequired" ]]
+                 then
+			echo "Password"
+                        stty -echo
+			read PW ; stty echo
+			echo "Your password is hidden for security purposes."
+                        HIDEPW='| sed 's/'"$PW"'//g'' 
+                        echo ''
+        	 else
+			HIDEPW=''
+		fi
+	echo "Protocol type"
+	echo "Choose (1-2) from the list below:"
+	select P in sftp ssh
+	do
+		break
+	done
+	echo "You chose $P."
+	echo ''
+	echo "Command String (Sudo and switches work!)"
+	echo "(Double check syntax. This will be run at all remote hosts!)"
+	read E
+	echo $E > /tmp/comd &
+	echo ''
+		EP=`awk '{print $1}' /tmp/comd`
+		if [[ $EP = sudo && $PW = '' ]]
+ 		 then
+			echo "Password"
+			read PW
+			echo ''
+			rm /tmp/comd
+		fi
+	echo "Time-Out (in seconds)(only choose 3 seconds if you have a very fast network)"
+	echo "Choose (1-24) from the list below:"
+        select S in 3 30 60 100 200 300 400 500 600 700 800 900 1000 1100 1200 1300 1400 1500 1600 1700 1800 1900 2000 
+        do
+                break 
+        done
+        echo "You chose $S."
+	echo ''
+	echo "Simultaneous connections"
+	echo "Choose (1-7) from the list below:"
+        select HM in 1 2 3 4 5 6 7 
+        do
+                break
+        done
+        echo "You chose $HM."
+
+	echo "Now executing - Please Wait"
+
+#######################################################################
+# Pull starting and ending criteria from host file and output to file #
+#######################################################################
+
+	cat "$C" | awk "/$F/,/$L/" | awk '{print$1,$2}' > /tmp/Selection
+
+###################################################################
+# Split host selection file into parts for multitasking purposes #
+###################################################################
+
+	LC=`wc -l /tmp/Selection | awk '{print$1}'`
+	CS=`split --lines=$(($LC/$HM+1)) /tmp/Selection | bc -l`
+	echo "$CS"
+	mv x?? /tmp
+	rm /tmp/Selection
+
+#########################################################################################
+# Create transfer session loop functions with expect scripts and conditional statements #
+#########################################################################################
+
+function group1 {
+ for host1 in `awk '{print$2}' /tmp/xaa`
+  do
+	cd "$HOME/resgu"
+	grep "$host1" /tmp/xaa > test1
+	HSTNAME1=`awk '{print$1}' test1`
+	TIMESTAMP1=`date +%t%R%t%D`
+	echo " Starting $P session with $HSTNAME1. $TIMESTAMP1"
+	rm test1
+		if [[ $E == get* ]]
+		 then
+			mkdir "$HOME/resgu/$HSTNAME1"
+			cd "$HOME/resgu/$HSTNAME1"
+		fi
+		if [ $P = ftp ]
+		 then
+build_script()	{
+cat << cmd1
+#!/usr/bin/expect -f
+set timeout $S
+spawn ftp ${host1}
+expect "): "
+send "\r"
+expect "ftp> "
+send "epsv\r"
+expect "ftp> "
+send "$E\r"
+expect "ftp> "
+send "bye\r"
+cmd1
+}
+build_script | /usr/bin/expect -f - "$HIDEPW" 
+echo ""
+		elif [ $P = sftp ]
+		 then
+build_script()	{
+cat << cmd1
+#!/usr/bin/expect -f
+set timeout $S
+spawn sftp ${U}@${host1}
+expect -timeout 5 "Are you sure you want to continue connecting (yes/no)? " {
+send "yes\r" }
+expect -timeout 15 assword: {
+send "$PW\r" }
+expect "sftp> "
+send "$E\r"
+expect "sftp> "
+send "bye\r"
+cmd1
+}
+build_script | /usr/bin/expect -f - "$HIDEPW"
+echo ""
+		elif [ $P = ssh ]
+		 then
+build_script()  {
+cat << cmd1
+#!/usr/bin/expect -f
+set timeout $S
+spawn ssh ${U}@${host1}
+expect -timeout 5 "Are you sure you want to continue connecting (yes/no)? " {
+send "yes\r" }
+expect -timeout 15 assword: { 
+send "$PW\r" }
+expect -re {[#>] ?$}
+send "$E\r"
+expect -re {[#>] ?$}
+send "exit\r"
+cmd1
+}
+build_script | /usr/bin/expect -f - "$HIDEPW" 
+echo ""
+		fi
+	TIMESTAMP1=`date +%t%R%t%D`
+	echo " Closing $P session. 		 $TIMESTAMP1"
+	echo ""
+  done
+}
+
+function group2 {
+ for host2 in `awk '{print$2}' /tmp/xab`
+  do
+	cd "$HOME/resgu"
+	grep "$host2" /tmp/xab > test2
+	HSTNAME2=`awk '{print$1}' test2`
+	TIMESTAMP2=`date +%t%R%t%D`
+	echo " Starting $P session with $HSTNAME2. $TIMESTAMP2"
+	rm test2
+		if [[ $E == get* ]]
+		 then
+			mkdir "$HOME/resgu/$HSTNAME2"
+			cd "$HOME/resgu/$HSTNAME2"
+		fi
+		if [ $P = ftp ]
+		 then
+build_script()  {
+cat << cmd2
+#!/usr/bin/expect -f
+set timeout $S
+spawn ftp ${host2}
+expect "): "
+send "\r"
+expect "ftp> "
+send "epsv\r"
+expect "ftp> "
+send "$E\r"
+expect "ftp> "
+send "bye\r"
+cmd2
+}
+build_script | /usr/bin/expect -f - "$HIDEPW"
+echo ""
+		elif [ $P = sftp ]
+		 then
+build_script()  {
+cat << cmd2
+#!/usr/bin/expect -f
+set timeout $S
+spawn sftp ${U}@${host2}
+expect -timeout 5 "Are you sure you want to continue connecting (yes/no)? " {
+send "yes\r" }
+expect -timeout 15 assword: {
+send "$PW\r" }
+expect "sftp> "
+send "$E\r"
+expect "sftp> "
+send "bye\r"
+cmd2
+}
+build_script | /usr/bin/expect -f - "$HIDEPW" 
+echo ""
+		elif [ $P = ssh ]
+                 then
+build_script()  {
+cat << cmd2
+#!/usr/bin/expect -f
+set timeout $S
+spawn ssh ${U}@${host2}
+expect -timeout 5 "Are you sure you want to continue connecting (yes/no)? " {
+send "yes\r" } 
+expect -timeout 15 assword: {
+send "$PW\r" }
+expect -re {[#>] ?$}
+send "$E\r"
+expect -re {[#>] ?$}
+send "exit\r"
+cmd2
+}
+build_script | /usr/bin/expect -f - "$HIDEPW"
+echo ""
+		fi
+	TIMESTAMP2=`date +%t%R%t%D`
+	echo " Closing $P session. 		 $TIMESTAMP2"
+	echo ""
+  done
+}
+
+function group3 {
+ for host3 in `awk '{print$2}' /tmp/xac`
+  do
+	cd "$HOME/resgu"
+	grep "$host3" /tmp/xac > test3
+	HSTNAME3=`awk '{print$1}' test3`
+	TIMESTAMP3=`date +%t%R%t%D`
+	echo " Starting $P session with $HSTNAME3. $TIMESTAMP3"
+	rm test3
+		if [[ $E == get* ]]
+		 then
+			mkdir "$HOME/resgu/$HSTNAME3"
+			cd "$HOME/resgu/$HSTNAME3"
+		fi
+		if [ $P = ftp ]
+		 then
+build_script()  {
+cat << cmd3
+#!/usr/bin/expect -f
+set timeout $S
+spawn ftp ${host3}
+expect "): "
+send "\r"
+expect "ftp> "
+send "epsv\r"
+expect "ftp> "
+send "$E\r"
+expect "ftp> "
+send "bye\r"
+cmd3
+}
+build_script | /usr/bin/expect -f - "$HIDEPW"
+echo ""
+		elif [ $P = sftp ]
+	 	 then
+build_script()  {
+cat << cmd3
+#!/usr/bin/expect -f
+set timeout $S
+spawn sftp ${U}@${host3}
+expect -timeout 5 "Are you sure you want to continue connecting (yes/no)? " {
+send "yes\r" } 
+expect -timeout 15 assword: {
+send "$PW\r" }
+expect "sftp> "
+send "$E\r"
+expect "sftp> "
+send "bye\r"
+cmd3
+}
+build_script | /usr/bin/expect -f - "$HIDEPW"
+echo ""
+                elif [ $P = ssh ]
+                 then
+build_script()  {
+cat << cmd3
+#!/usr/bin/expect -f
+set timeout $S
+spawn ssh ${U}@${host3}
+expect -timeout 5 "Are you sure you want to continue connecting (yes/no)? " {
+send "yes\r" }
+expect -timeout 15 assword: {
+send "$PW\r" }
+expect -re {[#>] ?$}
+send "$E\r"
+expect -re {[#>] ?$}
+send "exit\r"
+cmd3
+}
+build_script | /usr/bin/expect -f - "$HIDEPW" 
+echo ""
+		fi
+	TIMESTAMP3=`date +%t%R%t%D`
+	echo " Closing $P session.		 $TIMESTAMP3"
+	echo ""
+  done
+}
+
+function group4 {
+ for host4 in `awk '{print$2}' /tmp/xad`
+  do
+	cd "$HOME/resgu"
+	grep "$host4" /tmp/xad > test4
+	HSTNAME4=`awk '{print$1}' test4`
+	TIMESTAMP4=`date +%t%R%t%D`
+	echo " Starting $P session with $HSTNAME4. $TIMESTAMP4"
+	rm test4
+		if [[ $E == get* ]]
+	 	 then
+			mkdir "$HOME/resgu/$HSTNAME4"
+			cd "$HOME/resgu/$HSTNAME4"
+		fi
+		if [ $P = ftp ]
+		 then
+build_script()  {
+cat << cmd4
+#!/usr/bin/expect -f
+set timeout $S
+spawn ftp ${host4}
+expect "): "
+send "\r"
+expect "ftp> "
+send "epsv\r"
+expect "ftp> "
+send "$E\r"
+expect "ftp> "
+send "bye\r"
+cmd4
+}
+build_script | /usr/bin/expect -f - "$HIDEPW"
+echo ""
+		elif [ $P = sftp ]
+		 then
+build_script()  {
+cat << cmd4
+#!/usr/bin/expect -f
+set timeout $S
+spawn sftp ${U}@${host4}
+expect -timeout 5 "Are you sure you want to continue connecting (yes/no)? " {
+send "yes\r" } 
+expect -timeout 15 assword: {
+send "$PW\r" }
+expect "sftp> "
+send "$E\r"
+expect "sftp> "
+send "bye\r"
+cmd4
+}
+build_script | /usr/bin/expect -f - "$HIDEPW" 
+echo ""
+		elif [ $P = ssh ]
+                 then
+build_script()  {
+cat << cmd4
+#!/usr/bin/expect -f
+set timeout $S
+spawn ssh ${U}@${host4}
+expect -timeout 5 "Are you sure you want to continue connecting (yes/no)? " {
+send "yes\r" }
+expect -timeout 15 assword: {
+send "$PW\r" }
+expect -re {[#>] ?$} 
+send "$E\r"
+expect -re {[#>] ?$}
+send "exit\r"
+cmd4
+}
+build_script | /usr/bin/expect -f - "$HIDEPW"
+echo ""
+		fi
+	TIMESTAMP4=`date +%t%R%t%D`
+	echo " Closing $P session. 		 $TIMESTAMP4"
+	echo ""
+  done
+}
+
+function group5 {
+ for host5 in `awk '{print$2}' /tmp/xae`
+  do
+	cd "$HOME/resgu"
+	grep "$host5" /tmp/xae > test5
+	HSTNAME5=`awk '{print$1}' test5`
+	TIMESTAMP5=`date +%t%R%t%D`
+	echo " Starting $P session with $HSTNAME5. $TIMESTAMP5"
+	rm test5
+		if [[ $E == get* ]]
+	 	 then
+			mkdir "$HOME/resgu/$HSTNAME5"
+			cd "$HOME/resgu/$HSTNAME5"
+		fi
+		if [ $P = ftp ]
+		 then
+build_script()  {
+cat << cmd5
+#!/usr/bin/expect -f
+set timeout $S
+spawn ftp ${host5}
+expect "): "
+send "\r"
+expect "ftp> "
+send "epsv\r"
+expect "ftp> "
+send "$E\r"
+expect "ftp> "
+send "bye\r"
+cmd5
+}
+build_script | /usr/bin/expect -f - "$HIDEPW" 
+echo ""
+		elif [ $P = sftp ]
+	 	 then
+build_script()  {
+cat << cmd5
+#!/usr/bin/expect -f
+set timeout $S
+spawn sftp ${U}@${host5}
+expect -timeout 5 "Are you sure you want to continue connecting (yes/no)? " {
+send "yes\r" } 
+expect -timeout 15 assword: {
+send "$PW\r" }
+expect "sftp> "
+send "$E\r"
+expect "sftp> "
+send "bye\r"
+cmd5
+}
+build_script | /usr/bin/expect -f - "$HIDEPW" 
+echo ""
+                elif [ $P = ssh ]
+                 then
+build_script()  {
+cat << cmd5
+#!/usr/bin/expect -f
+set timeout $S
+spawn ssh ${U}@${host5}
+expect -timeout 5 "Are you sure you want to continue connecting (yes/no)? " {
+send "yes\r" }
+expect -timeout 15 assword: {
+send "$PW\r" }
+expect -re {[#>] ?$}
+send "$E\r"
+expect -re {[#>] ?$}
+send "exit\r"
+cmd5
+}
+build_script | /usr/bin/expect -f - "$HIDEPW"
+echo ""
+		fi
+	TIMESTAMP5=`date +%t%R%t%D`
+	echo " Closing $P session. 		 $TIMESTAMP5"
+	echo ""
+  done
+}
+
+function group6 {
+ for host6 in `awk '{print$2}' /tmp/xaf`
+  do
+	cd "$HOME/resgu"
+	grep "$host6" /tmp/xaf > test6
+	HSTNAME6=`awk '{print$1}' test6`
+	TIMESTAMP6=`date +%t%R%t%D`
+	echo " Starting $P session with $HSTNAME6. $TIMESTAMP6"
+	rm test6
+		if [[ $E == get* ]]
+		 then
+			mkdir "$HOME/resgu/$HSTNAME6"
+			cd "$HOME/resgu/$HSTNAME6"
+		fi
+		if [ $P = ftp ]
+		 then
+build_script()  {
+cat << cmd6
+#!/usr/bin/expect -f
+set timeout $S
+spawn ftp ${host6}
+expect "): "
+send "\r"
+expect "ftp> "
+send "epsv\r"
+expect "ftp> "
+send "$E\r"
+expect "ftp> "
+send "bye\r"
+cmd6
+}
+build_script | /usr/bin/expect -f - "$HIDEPW" 
+echo ""
+		elif [ $P = sftp ]
+	 	 then
+build_script()  {
+cat << cmd6
+#!/usr/bin/expect -f
+set timeout $S
+spawn sftp ${U}@${host6}
+expect -timeout 5 "Are you sure you want to continue connecting (yes/no)? " {
+send "yes\r" } 
+expect -timeout 15 assword: {
+send "$PW\r" }
+expect "sftp> "
+send "$E\r"
+expect "sftp> "
+send "bye\r"
+cmd6
+}
+build_script | /usr/bin/expect -f - "$HIDEPW" 
+echo ""
+                elif [ $P = ssh ]
+                 then
+build_script()  {
+cat << cmd6
+#!/usr/bin/expect -f
+set timeout $S
+spawn ssh ${U}@${host6}
+expect -timeout 5 "Are you sure you want to continue connecting (yes/no)? " {
+send "yes\r" }
+expect -timeout 15 assword: {
+send "$PW\r" }
+expect -re {[#>] ?$}
+send "$E\r"
+expect -re {[#>] ?$}
+send "exit\r"
+cmd6
+}
+build_script | /usr/bin/expect -f - "$HIDEPW"
+echo ""
+		fi
+	TIMESTAMP6=`date +%t%R%t%D`
+	echo " Closing $P session. 		 $TIMESTAMP6"
+	echo ""
+  done
+}
+
+function group7 {
+ for host7 in `awk '{print$2}' /tmp/xag`
+  do
+	cd "$HOME/resgu"
+	grep "$host7" /tmp/xag > test7
+	HSTNAME7=`awk '{print$1}' test7`
+	TIMESTAMP7=`date +%t%R%t%D`
+	echo " Starting $P session with $HSTNAME7. $TIMESTAMP7"
+	rm test7
+		if [[ $E == get* ]]
+		 then
+			mkdir "$HOME/resgu/$HSTNAME7"
+			cd "$HOME/resgu/$HSTNAME7"
+		fi
+		if [ $P = ftp ]
+		 then
+build_script()  {
+cat << cmd7
+#!/usr/bin/expect -f
+set timeout $S
+spawn ftp ${host7}
+expect "): "
+send "\r"
+expect "ftp> "
+send "epsv\r"
+expect "ftp> "
+send "$E\r"
+expect "ftp> "
+send "bye\r"
+cmd7
+}
+build_script | /usr/bin/expect -f - "$HIDEPW" 
+echo ""
+		elif [ $P = sftp ]
+		 then
+build_script()  {
+cat << cmd7
+#!/usr/bin/expect -f
+set timeout $S
+spawn sftp ${U}@${host7}
+expect -timeout 5 "Are you sure you want to continue connecting (yes/no)? " {
+send "yes\r" } 
+expect -timeout 15 assword: {
+send "$PW\r" }
+expect "sftp> "
+send "$E\r"
+expect "sftp> "
+send "bye\r"
+cmd7
+}
+build_script | /usr/bin/expect -f - "$HIDEPW"
+echo ""
+                elif [ $P = ssh ]
+                 then
+build_script()  {
+cat << cmd7
+#!/usr/bin/expect -f
+set timeout $S
+spawn ssh ${U}@${host7}
+expect -timeout 5 "Are you sure you want to continue connecting (yes/no)? " {
+send "yes\r" }
+expect -timeout 15 assword: {
+send "$PW\r" }
+expect -re {[#>] ?$}
+send "$E\r"
+expect -re {[#>] ?$}
+send "exit\r"
+cmd7
+}
+build_script | /usr/bin/expect -f - "$HIDEPW" 
+echo ""
+		fi
+	TIMESTAMP7=`date +%t%R%t%D`
+	echo " Closing $P session.	 	 $TIMESTAMP7"
+	echo ""
+  done
+}
+
+#####################################
+# Execute and report loop functions #
+#####################################
+
+if [ -f /tmp/xaa ]
+ then
+	group1 > "/tmp/templog1" 2>&1 &
+fi
+
+if [ -f /tmp/xab ]
+ then
+	group2 > "/tmp/templog2" 2>&1 &
+fi
+ 
+if [ -f /tmp/xac ]
+ then
+	group3 > "/tmp/templog3" 2>&1 &
+fi
+
+if [ -f /tmp/xad ]
+ then
+        group4 > "/tmp/templog4" 2>&1 &
+fi
+
+if [ -f /tmp/xae ]
+ then
+	group5 > "/tmp/templog5" 2>&1 &
+fi
+
+if [ -f /tmp/xaf ]
+ then
+	group6 > "/tmp/templog6" 2>&1 &
+fi
+
+if [ -f /tmp/xag ]
+ then
+	group7 > "/tmp/templog7" 2>&1 &
+fi
+
+	wait
+
+if [ -f /tmp/templog1 ]
+ then
+	cat "/tmp/templog1" >> $LOG
+fi
+
+if [ -f /tmp/templog2 ]
+ then
+	cat "/tmp/templog2" >> $LOG
+fi
+
+if [ -f /tmp/templog3 ]
+ then
+	cat "/tmp/templog3" >> $LOG
+fi
+
+if [ -f /tmp/templog4 ]
+ then
+	cat "/tmp/templog4" >> $LOG
+fi
+
+if [ -f /tmp/templog5 ]
+ then
+	cat "/tmp/templog5" >> $LOG
+fi
+
+if [ -f /tmp/templog6 ]
+ then
+	cat "/tmp/templog6" >> $LOG
+fi
+
+if [ -f /tmp/templog7 ]
+ then
+	cat "/tmp/templog7" >> $LOG
+fi
+
+###################################################
+# Run cleanup and remove redundant success lines. #
+###################################################
+
+> /tmp/job"$DATESTAMP".log
+if [[ $P == 'sftp' ]]
+ then
+    sed -i 's/100%/\n100%/g' /tmp/job.log
+fi
+grep -Ev "1%" /tmp/job.log >> /tmp/job"$DATESTAMP".log
+grep -v 'ETA' /tmp/job"$DATESTAMP".log >> $HOME/resgu/job"$DATESTAMP".log
+if [[ $E == put* ]]
+                 then
+                        grep -v KB/s.....:....... $HOME/resgu/job"$DATESTAMP".log > job.log
+                        mv job.log "$HOME/resgu/job"$DATESTAMP".log"
+fi
+
+rm /tmp/job.log
+rm /tmp/job"$DATESTAMP".log
+find $HOME/resgu/job*.log -mtime +7 -delete # Purge job files older that 7 days
+
+##############################################################
+# Remove PW from job log in the event of connection failure. #
+##############################################################
+
+if [[ $PW != '' ]]
+ then
+    sed -i 's/'"$PW"'//g' job"$DATESTAMP".log
+fi 
+
+###################################
+# Remove temporary files and logs #
+###################################
+
+rm -R /tmp/xa* /tmp/templog* /tmp/comd
+
+echo "Utility now finished. Please review job"$DATESTAMP".log."
+#########################################################################
+#                                                                    	#
+# Created to allow a single string to be sent via, sftp or ssh to a     #
+# range of ip addresses based off a specified host file. The script     #
+# generates and executes multiple expect scripts based off the user's   #
+# interactively inputted criteria.                                      # 
+#                                                                   	#
+# Written By Satelleyet                                           	#
+# Last updated Sep 14, 2018                                             # 
+#########################################################################
