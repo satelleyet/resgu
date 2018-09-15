@@ -57,6 +57,7 @@ One or more hosts files named whatever you'd like must be placed in the director
 server1 12.34.56.78                                                                                                             
 server2 12.45.67.89                                                                                                             
 server3 13.56.78.89                                                                                                                                                                                  
+
 Usage:                                                                                                                                          
 From your user's home/resgu directory type the below command to start the utility.                                                                                                                         
 ./resgu
