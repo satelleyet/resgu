@@ -9,7 +9,7 @@ This is an extremely powerful utility with very constructive or destructive capa
 
 This utility requires both kornshell (aka ksh) and expect to be installed. I've tested various versions of each without issue, but make no guarantees if the version of ksh or expect that you're using do not work. 
 
-Also, the utility will only work be able to reach your target hosts if you either have passwordless authentication setup for all target hosts or all of the target hosts logins use the same password. I highly recommend the former where possible.
+Also, the utility will only be able to reach your target hosts if you either have passwordless authentication setup for all target hosts or all of the target hosts logins use the same password. I highly recommend the former where possible.
 
 Any user can use the utility (sudo not needed so only give this to users that can be trusted).
 
@@ -69,30 +69,30 @@ ps -ef | grep process | awk '{print \\$2}'
                                                                                                                                                                                                                                                                   
 Interactive prompts:
 
-1. First enter the name of one of your hosts files.
+1. First enter the name of one of your hosts files.                                                                             
 testhostsfile
 
-2. Next enter the first host of your range in your selected hosts file.
+2. Next enter the first host of your range in your selected hosts file.                                                         
 host1
 
-3. Next enter the last host of your range in your selected hosts file.
+3. Next enter the last host of your range in your selected hosts file.                                                         
 host1000
 
-4. Next enter the username of your desired remote login.
+4. Next enter the username of your desired remote login.                                                                        
 someuser1
 
 5. Next enter the password for the user if the user requires a password to login rather than using passwordless authentication (password will not appear on the screen).
 
-6. Next select 1 for sftp or 2 for ssh.
+6. Next select 1 for sftp or 2 for ssh.                                                                                                                                
 2
 
-7. Next enter the command to be executed.
+7. Next enter the command to be executed.                                                                                       
 put somefile somewhere
 
-8. Select between 1 and 23 to choose the length of your timeout in seconds.
+8. Select between 1 and 23 to choose the length of your timeout in seconds.                                                    
 2
 
-9. Select between 1 and 7 to choose the amount of connections to be established simultaneously.
+9. Select between 1 and 7 to choose the amount of connections to be established simultaneously.                                  
 7
 
 Logging: 
