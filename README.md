@@ -60,7 +60,7 @@ server3 13.56.78.89
 
 Usage:
 
-From your user's home/resgu directory type the below command to start the utility.                                                                                                                         
+From your user's resgu directory type the below command to start the utility.                                                                                                                         
 ./resgu
 
 When you execute the utility you will be greeted with the following warning information that is relevant to the setup and responses you will be providing before the ultimate execution of the expect scripts.
