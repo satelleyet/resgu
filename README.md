@@ -43,17 +43,16 @@ Important Notes:
                                                                                                                                 
 Initial Setup:
 
-1. Placing resgu and the required files in the appropriate directory
+1. Placing resgu and the required files in the appropriate directory                                                                       
 The resgu executable can only be executed from a users home/user/resgu directory. For instance if I'm logging into the central server as the user "someuser1", then the resgu executable and it's required files must be in the "/home/someuser1/resgu" directory.
-2. Setting up the "Users" file
+2. Setting up the "Users" file                                                                                                               
 A file called "Users" must be placed in the directory where resgu executable is. Resgu uses this to tell if the remote user is already setup up with passwordless authentication or not. If not you will be prompted to enter a password. First column is the name of the user and the second column should be set to either passwordnotrequired or passwordrequired accordingly.                  
 someuser1 passwordnotrequired                                                                                                   
 someuser2 passwordrequired                                                                                                       
 ansibletower passwordrequired                                                                                                   
 root passwordrequired                                                                                                           
 
-3. Setting up a single or multiple hosts files
-
+3. Setting up a single or multiple hosts files                                                                                                              
 One or more hosts files named whatever you'd like must be placed in the directory where the resgu executable is. Resgu uses this to connect to the remote hosts via a range that you select interactively upon execution of the utility. Hosts files must be in a two column format just like a normal hosts file. 
 
 server1 12.34.56.78                                                                                                             
