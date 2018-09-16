@@ -16,7 +16,7 @@ If you don't have an enterprise level automation software available such as Ansi
 8. Specify an expect script timeout for the individual connections.
 9. Ctrl + C kill switch cleans up afterwards. (Does not change anything on remote servers. Kills local resgu processes and cleans up resgu temp files.)
 10. Handles creation of initial login keys.
-11. Handles passwordless or password required cases via Users file.
+11. Securely handles passwordless or password required cases via Users file.
 12. Handles various AIX or Linux flavors ssh prompts.
 13. Minimal configuration to get up and running.
 
