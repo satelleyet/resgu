@@ -1,12 +1,12 @@
 # resgu
 
-Range Expect Script Generator Utility
+#Range Expect Script Generator Utility
                                                                                                                                                                                                                                 
-Synopsis:
+##Synopsis:
 
 If you don't have an enterprise level automation software available such as Ansible, but have a need to automate a repetetive ssh or sftp task for tens, hundreds or even thousands of servers without creating an expect script everytime you have a new task to do, then give resgu a try. Resgu is a utility which allows for a single string (or huge one liner) to be sent via ssh or sftp to a range of ip addresses based off a specified host file (sorry ftp is not included due to security issues with the protocol). Great for Linux or AIX administrators and networking administrators that need to get a quick job done fast at a lot of hosts or routers. 
 
-Features:
+##Features:
 
 1. Interactive prompts make expect script generation and simultaneous execution for a range of hosts very easy. Just answer the questions and let the utility do all the work. No coding or scripting knowledge required! 
 2. Creates up to 7 expect scripts on the fly and executes them.
@@ -25,7 +25,7 @@ Features:
 The utility generates and executes multiple expect scripts on the fly and simultaneously based off the user's interactively inputted criteria. The execution of the utility has been tested via SLES 9 through 11, but should also work for systems that utilize other versions of Linux as well as AIX, Cygwin or OSX (assuming you have both a bash shell and expect installed on the local system). The utility is written in bash and expect so feel free to make your own alterations.
                                                                                                                                           
 
-Important Notes: 
+##Important Notes: 
 
 1. This is an extremely powerful utility with very constructive or destructive capabilites depending on who's using it! Upon execution of the utility make sure that you quadrupal check your answers to the interactive prompts.
 
@@ -42,7 +42,7 @@ Important Notes:
                                                                                                                                
                                                                                                                     
                                                                                                               
-Initial Setup:
+##Initial Setup:
 
 1. Placing resgu and the required files in the appropriate directory                                                                       
 The resgu executable can only be executed from a users home/user/resgu directory. For instance if I'm logging into the central server as the user "someuser1", then the resgu executable and it's required files must be in the "/home/someuser1/resgu" directory.
@@ -59,7 +59,7 @@ server1 12.34.56.78
 server2 12.45.67.89                                                                                                             
 server3 13.56.78.89                                                                                                                                                                                  
 
-Usage:
+##Usage:
 
 From your user's resgu directory type the below command to start the utility.                                                                                                                         
 ./resgu
@@ -81,7 +81,7 @@ ps -ef | grep process | awk '{print \\\\$2}'
 
 5. Press Ctrl+C to abort.
                                                                                                                                                                                                                                                                   
-Interactive prompts:
+##Interactive prompts:
 
 1. First enter the name of one of your hosts files.                                                                             
 testhostsfile
@@ -109,7 +109,7 @@ put somefile somewhere
 9. Select between 1 and 7 to choose the amount of connections to be established simultaneously.                                  
 7
 
-Logging: 
+##Logging: 
 
 To check the progress of the utility you can open a new command line interface and view the templog files under the /tmp directory. How many templogs there are depends on how many simultaneous connections you chose to have. If there are 7 then there will be a file at /tmp/templog1, /tmp/templog2 and so on until /tmp/templog7.
 
