@@ -1,6 +1,4 @@
-# resgu
-
-# Range Expect Script Generator Utility
+# resgu (Range Expect Script Generator Utility)
                                                                                                                                                                                                                                 
 ## Synopsis:
 
@@ -14,7 +12,7 @@ If you don't have an enterprise level automation software available such as Ansi
 4. Allows for remote script execution via ssh.
 5. GET or PUT files or directories from a range of hosts at once via sftp.
 6. Use different hosts files for different environments or cases. Can be handy if you only want to do a task a some of your stores, but they aren't in sequential order of your main hosts file.                                                  
-7. Execute tasks for a specified range of hosts within one of your hosts files.                                            
+7. Execute tasks for a specified range of hosts wthin one of your hosts files.                                            
 8. Specify an expect script timeout for the individual connections.
 9. Ctrl + C kill switch cleans up afterwards. (Does not change anything on remote servers. Kills local resgu processes and cleans up resgu temp files.)
 10. Handles creation of initial login keys.
