@@ -22,7 +22,7 @@ If you don't have an enterprise level automation software available such as Ansi
 12. Handles various AIX or Linux flavors ssh prompts.
 13. Minimal configuration to get up and running.
 
-The utility generates and executes multiple expect scripts on the fly and simultaneously based off the user's interactively inputted criteria. The execution of the utility has been tested via SLES 9 through 11, but should also work for systems that utilize other versions of Linux as well as AIX, Cygwin or OSX (assuming you have both a bash shell and expect installed on the local system). The utility is written in bash and expect so feel free to make your own alterations.
+The utility generates and executes multiple expect scripts on the fly and simultaneously based off the user's interactively inputted criteria. The execution of the utility has been tested via SLES 9 through 11, Cent OS 7 and AIX, but should also work for systems that utilize other versions of Linux, Unix or Cygwin (assuming you have both a bash shell and expect installed on the local system). The utility is written in bash and expect so feel free to make your own alterations.
                                                                                                                                           
 
 ## Important Notes: 
