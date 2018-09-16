@@ -79,7 +79,7 @@ ps -ef | grep process | awk '{print \\\\$2}'
 
 5. Press Ctrl+C to abort.
                                                                                                                                                                                                                                                                   
-## Interactive prompts:
+## Interactive prompts (with examples):
 
 1. First enter the name of one of your hosts files.                                                                             
 testhostsfile
