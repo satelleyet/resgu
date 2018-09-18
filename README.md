@@ -43,6 +43,7 @@ The utility generates and executes multiple expect scripts on the fly and simult
 
 1. Placing resgu and the required files in the appropriate directory                                                                       
 The resgu executable can only be executed from a users home/user/resgu directory. For instance if I'm logging into the central server as the user "someuser1", then the resgu executable and it's required files must be in the "/home/someuser1/resgu" directory.
+
 2. Setting up the "Users" file                                                                                                               
 A file called "Users" must be placed in the directory where resgu executable is. Resgu uses this to tell if the remote user is already setup up with passwordless authentication or not. If not you will be prompted to enter a password. First column is the name of the user and the second column should be set to either passwordnotrequired or passwordrequired accordingly.                  
 someuser1 passwordnotrequired                                                                                                   
