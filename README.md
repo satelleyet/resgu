@@ -1,6 +1,6 @@
 # resgu (Range Expect Script Generator Utility)                                                                                           
 Download resgu
- [a link](https://github.com/satelleyet/resgu/archive/master.zip)                                                                                                                                                                                                                               
+ [Download resgu](https://github.com/satelleyet/resgu/archive/master.zip)                                                                                                                                                                                                                               
 ## Synopsis:
 
 If you don't have an enterprise level automation software available such as Ansible, but have a need to automate a repetetive ssh or sftp task for tens, hundreds or even thousands of servers without creating an expect script everytime you have a new task to do, then give resgu a try. Resgu is a utility which allows for a single string (or huge one liner) to be sent via ssh or sftp to a range of ip addresses based off a specified host file (sorry ftp is not included due to security issues with the protocol). Great for Linux or AIX administrators and networking administrators that need to get a quick job done fast at a lot of hosts or routers. 
