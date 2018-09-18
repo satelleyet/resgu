@@ -1,5 +1,4 @@
 # resgu (Range Expect Script Generator Utility)                                                                                           
-Download resgu
  [Download resgu](https://github.com/satelleyet/resgu/archive/master.zip)                                                                                                                                                                                                                               
 ## Synopsis:
 
