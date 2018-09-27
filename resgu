@@ -75,9 +75,9 @@ function ctrl_c {
 exit 1
 }
 
-############################################################################
-#  Check if expect and ksh binaries exist and break out of utility if not. #
-############################################################################
+####################################################################
+#  Check if expect binaries exist and break out of utility if not. #
+####################################################################
 
 CHECKFOREXPECT=`whereis -b expect | sed 's/expect: //g'`
 
@@ -92,21 +92,6 @@ if [[ $CHECKFOREXPECT = '' ]]
 
         ctrl_c
 fi
-
-CHECKFORKSH=`whereis -b ksh | sed 's/ksh: //g'`
-
-if [[ $CHECKFORKSH = '' ]]
- then
-        echo '!!!ATTENTION!!!'
-        echo ''
-        echo 'The ksh binary does not exist on this system! Unable to continue.'
-        echo "Work with your AIX or Linux administrator to install ksh."
-        echo ''
-        echo "Exiting resgu"
-
-        ctrl_c
-fi
-
 
 
 #####################################################################
